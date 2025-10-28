@@ -1,0 +1,17 @@
+p,ul,li {
+  font-family: Arial;
+  color: rgb(52, 71, 107);
+  width: 30%;
+  grid-column :2;
+  grid-row :2;
+  
+}
+
+div p {
+  font-family: Arial;
+  color: rgb(58, 68, 87);
+  background-color:rgba(186, 199, 224, 0.322) ;
+  border : solid 2px rgb(109, 129, 155);
+  padding : 1.5%;
+  border-radius: 25px;
+}

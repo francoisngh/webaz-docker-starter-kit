@@ -24,6 +24,10 @@ Flight::route('/test-db', function () {
     Flight::json($results);
 });
 
+Flight::route('/map', function() {
+    Flight::render('map');
+});
+
 Flight::start();
 
 ?>

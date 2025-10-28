@@ -7,5 +7,8 @@
 </head>
 <body>
     <p>Hello World</p>
+    <ul>
+        <li><a href="/map" title="lien"> page carte </a></li>
+    </ul>
 </body>
 </html>
