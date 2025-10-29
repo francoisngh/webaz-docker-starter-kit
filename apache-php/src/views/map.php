@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/ol/dist/ol.js"></script>
     <link rel="stylesheet" href="../assets/css/map.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
   </head>
 
   <body>
