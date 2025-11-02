@@ -20,10 +20,12 @@ map = new ol.Map({
 //objet numéro 1 :
 P1 = [2.35, 48.85]
 let item1 = new ol.layer.Vector({
+    //controle du niveau de zoom à partir duquel l'item est visible
+    minZoom: 15,
     source: new ol.source.Vector({
         features: [
             new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat(P1, 'EPSG:3857'))),
-        ],
+        ],          
     }),
 });
 //style : 
@@ -47,40 +49,9 @@ map.addLayer(item1);
 
 
 
-//cacher les items en fonction du zoom :
+//debuger :
 map.on('moveend', function (evt) {
     let m = evt.map;
-      let v = m.getView();
-        if (v.getZoom() > 10) {
-            toggleitems(true);
-        } else {
-                toggleitems(false);
-        }
+    let v = m.getView();
+    console.log(map.getZoom)
     });
-
-function toggleitems(show) {
-    /*
-        let lyrs = map.getAllLayers(); 
-        for (let l in lyrs) {
-            source = lyrs[l].getSource();  
-             
-            let features = source.getFeaturesCollection();          
-            features.forEach( function (feat) {                 
-                let s = feat.getStyle()[0];  //works
-                if (show) {
-                    if (s.getScale()[0] == 0) {       
-                        s.setScale([1, 1]);
-                    }
-                } else {
-                    
-                    if (s.getScale()[0] == 1) {       
-                        s.setScale([0, 0]);
-                    }
-                }                           
-            });         
-            
-        }           
-        map.render();   //appears to do nothing
-        //map_obj.renderSync();  //exceeds max call stack size
-        */
-    }
