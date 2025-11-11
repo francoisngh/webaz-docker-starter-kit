@@ -14,6 +14,20 @@
   <body>
     <div id="entete">
         <p> Escape Game </p>
+        <!-- Pour envoyer la variable au JS   !-->
+        <script>
+            const tab_pts = <?php echo json_encode($tab_pts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
+            console.log("tab_pts :", tab_pts);
+         </script>
+    
+        <?php 
+          echo"<table><tr>";
+          foreach ($tab_pts as $pts){
+            echo "<td>".$pts['name']."</td>";
+          };
+          echo"</tr></table>";
+       
+        ?>
     </div>
     <div id="map"></div>
     <script src="../assets/js/map.js"></script>

@@ -1,3 +1,7 @@
+//récupération des données depuis le php
+console.log(tab_pts[0]['geom'])
+paris = tab_pts[0]['geom']
+
 map = new ol.Map({
     target: 'map',
     view: new ol.View({
@@ -29,7 +33,7 @@ let item1 = new ol.layer.Vector({
     }),
 });
 //style : 
-const iconStyle = new ol.style.Style({
+const coffre = new ol.style.Style({
   image: new ol.style.Icon({
     anchor: [0, 0],
     anchorXUnits: "pixels",
@@ -40,18 +44,28 @@ const iconStyle = new ol.style.Style({
   })
 });
 	
-item1.setStyle(iconStyle);
+item1.setStyle(coffre);
+
 //ajout à la carte
 map.addLayer(item1);
 
 
 
+Vue.createApp({
+    data(){
+        return{
+            inventaire:[],
+        };
+    },
+    mounted(){
+        map.on('click', (evt) => {
+            /*
+            this.inventaire.push(item1.getSource().url);
+            console.log(item1.getSource());
+           */
+        });
+    },
+}).mount('#entete')
 
 
 
-//debuger :
-map.on('moveend', function (evt) {
-    let m = evt.map;
-    let v = m.getView();
-    console.log(map.getZoom)
-    });
