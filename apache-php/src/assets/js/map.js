@@ -49,6 +49,15 @@ item1.setStyle(coffre);
 //ajout à la carte
 map.addLayer(item1);
 
+//popup
+function onMapClick(e) {
+    const coords3857 = e.coordinate
+    const coords4326 = ol.proj.toLonLat(coords3857); // Conversion en lon/lat
+    //alert("You clicked the map at " + e.latlng);
+    console.log(coords4326);
+};
+
+map.on('click', onMapClick);
 
 
 Vue.createApp({
