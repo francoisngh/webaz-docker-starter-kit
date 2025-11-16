@@ -14,16 +14,19 @@
   <body>
     <div id="entete">
         <p> Escape Game </p>
+        <p> inventaire : {{inventaire}} <br>
+            indice : {{indice}}
+        </p>
         <!-- Pour envoyer la variable au JS   !-->
         <script>
-            const tab_pts = <?php echo json_encode($tab_pts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
-            console.log("tab_pts :", tab_pts);
+            const tab_obj = <?php echo json_encode($tab_obj, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
+            console.log("tab_obj :", tab_obj);
          </script>
     
         <?php 
           echo"<table><tr>";
-          foreach ($tab_pts as $pts){
-            echo "<td>".$pts['name']."</td>";
+          foreach ($tab_obj as $obj){
+            echo "<td>".$obj['nom']."</td>";
           };
           echo"</tr></table>";
        

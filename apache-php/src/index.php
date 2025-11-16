@@ -36,13 +36,13 @@ Flight::route('/map', function() {
 
     // Connexion BDD
     $link = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$pass");
-    $r = "SELECT name,geom FROM points";
-    $pts = pg_query($link,$r);
-    $tab_pts = ["t"];
+    $r = "SELECT id, nom, classe, objet_precedent, ST_AsGeoJSON(emplacement) AS emplacement FROM objets;";
+    $obj = pg_query($link,$r);
+    $tab_obj = ["t"];
  
-    $tab_pts = pg_fetch_all($pts) ?: [];  // Récupère tous les résultats
+    $tab_obj = pg_fetch_all($obj) ?: [];  // Récupère tous les résultats
 
-    Flight::render('map', ['tab_pts' => $tab_pts]);
+    Flight::render('map', ['tab_obj' => $tab_obj]);
 });
 
 Flight::start();
