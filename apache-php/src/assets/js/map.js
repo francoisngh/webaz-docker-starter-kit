@@ -169,14 +169,14 @@ map.addLayer(item3);
 // --- APP VUE.JS ---
 // ----------------------------------------------------------------------
 
-Vue.createApp({
+const app = Vue.createApp({
     data(){
         return{
+            pseudo: "",
             inventaire:[],
             indice:['va à la capitale'],
             code1:'3498',
-            code2:'3759',
-            
+            code2:'3759',       
             heatmapVisible: false
         };
     },
@@ -189,6 +189,8 @@ Vue.createApp({
     },
 
     mounted(){
+        this.startTime = new Date();
+
         const app = this;
 
         // Click sur la carte
@@ -250,8 +252,34 @@ Vue.createApp({
                 item3.getSource().removeFeature(feature);
                 app.indice[0] = ("")
                 alert("VICTOIRE !")
-            } 
-            else {
+
+                const endTime = new Date();
+                const timeDiffMin = Math.floor((endTime - app.startTime) / 60000);
+
+                const objetsTrouves = app.inventaire.filter(i => i !== 'code 1' && i !== 'code 2').length;
+                const codesTrouves = 2; // code1 et code2
+                const score = (objetsTrouves * 10) + (codesTrouves * 20) - timeDiffMin;
+                console.log("SCORE CALCULÉ :", score);
+
+                // envoyer le score au serveur
+                fetch('/save-score', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        pseudo: app.pseudo,  
+                        score: score          
+                    })
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if(res.success) {
+                        alert("Score enregistré !");
+                    } else {
+                        alert("Erreur lors de l'enregistrement du score.");
+                    }
+                });
+   
+            } else {
                 alert("Code invalide.");
             }
         };  
@@ -260,3 +288,22 @@ Vue.createApp({
 });
     },
 }).mount('#entete');
+
+document.getElementById("start-btn").addEventListener("click", function(){
+    const p = document.getElementById("pseudo-input").value.trim();
+
+    if(p === ""){
+        alert("Tu dois entrer un pseudo pour jouer !");
+        return;
+    }
+
+    app.pseudo = p;
+
+    document.getElementById("pseudo-box").style.display = "none";
+
+    document.getElementById("entete").style.display = "block";
+
+    // début chrono
+    app.startTime = new Date();
+});
+

@@ -45,6 +45,32 @@ Flight::route('/map', function() {
     Flight::render('map', ['tab_obj' => $tab_obj]);
 });
 
+Flight::route('POST /save-score', function() {
+    $data = Flight::request()->data->getData();
+    $pseudo = $data['pseudo'] ?? '';
+    $score = intval($data['score'] ?? 0);
+
+    if(!$pseudo || $score <= 0){
+        Flight::halt(400, 'Pseudo ou score invalide');
+    }
+
+    $link = pg_connect("host=db port=5432 dbname=mydb user=postgres password=postgres");
+    $sql = "INSERT INTO scores (pseudo, score) VALUES ($1, $2)";
+    pg_query_params($link, $sql, [$pseudo, $score]);
+
+    Flight::json(['success' => true]);
+});
+
+Flight::route('/hall-of-fame', function() {
+    $link = pg_connect("host=db port=5432 dbname=mydb user=postgres password=postgres");
+    $sql = "SELECT pseudo, score, date FROM scores ORDER BY score DESC, date ASC LIMIT 10";
+    $res = pg_query($link, $sql);
+    $topScores = pg_fetch_all($res) ?: [];
+    Flight::json($topScores);
+});
+
+
+
 Flight::start();
 
 ?>

@@ -12,6 +12,12 @@
   </head>
 
   <body>
+    <div id="pseudo-box">
+        <label>Choisis ton pseudo :</label>
+        <input type="text" id="pseudo-input">
+        <button id="start-btn">Commencer</button>
+    </div>  
+    
     <div id="entete">
         <p> Escape Game </p>
         <p> inventaire : {{inventaire}} <br>
