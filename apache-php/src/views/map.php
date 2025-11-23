@@ -17,6 +17,11 @@
         <p> inventaire : {{inventaire}} <br>
             indice : {{indice}}
         </p>
+
+        <button @click="toggleHeatmap">
+            {{ heatmapVisible ? "Masquer la heatmap" : "Afficher la heatmap" }}
+        </button>
+        
         <!-- Pour envoyer la variable au JS   !-->
         <script>
             const tab_obj = <?php echo json_encode($tab_obj, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;

@@ -1,8 +1,9 @@
-//récupération des données depuis le php
+// --- récupération des données depuis le PHP ---
 console.log('testeeeeee');
 console.log(tab_obj[0]['emplacement']);
 paris = tab_obj[0]['emplacement'];
 
+// --- CARTE ---
 map = new ol.Map({
     target: 'map',
     view: new ol.View({
@@ -10,21 +11,41 @@ map = new ol.Map({
         zoom: 13,
     }),
     layers: [
+        // FOND OSM
         new ol.layer.Tile({
             source: new ol.source.XYZ({
                 url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 maxZoom: 19,
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                attribution: '&copy; OpenStreetMap contributors',
             }),
-        }),
-        
+        })
     ],
-     
 });
 
-//------------------------------------------------------------------------0------------------------------------------------------------------------------//
+// --- HEATMAP GEOserver (WMS) déclarée globalement ---
+var heatmapLayer = new ol.layer.Tile({
+    source: new ol.source.TileWMS({
+        url: 'http://localhost:8080/geoserver/HeatMap/wms',
+        params: {
+            'LAYERS': 'HeatMap:objets',
+            'TILED': true,
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true
+        },
+        serverType: 'geoserver',
+        crossOrigin: 'anonymous'
+    }),
+    opacity: 0.6,
+    visible: false   // 🔥 cachée au démarrage
+});
 
-//objet numéro 0 :
+// On l'ajoute après la carte
+map.addLayer(heatmapLayer);
+
+// ----------------------------------------------------------------------
+// OBJETS 0, 1, 2, 3 (inchangés)
+// ----------------------------------------------------------------------
+
 P0 = JSON.parse(tab_obj[0].emplacement).coordinates; 
 let F0 = new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.fromLonLat(P0, 'EPSG:3857')),
@@ -33,14 +54,11 @@ let F0 = new ol.Feature({
     obj_prec: tab_obj[0]['objet_precedent']
 });
 let item0 = new ol.layer.Vector({
-    //controle du niveau de zoom à partir duquel l'item est visible
-
     source: new ol.source.Vector({
         features: [F0],      
     }),
     minZoom:12,    
 });
-//style : 
 const cle = new ol.style.Style({
   image: new ol.style.Icon({
     anchor: [0, 0],
@@ -51,13 +69,12 @@ const cle = new ol.style.Style({
     height:50,
   })
 });
-	
 item0.setStyle(cle);
 
-//------------------------------------------------------------------------1------------------------------------------------------------------------------//
+// ----------------------------------------------------------------------
+// OBJET 1
+// ----------------------------------------------------------------------
 
-
-//objet numéro 1 :
 P1 = JSON.parse(tab_obj[1].emplacement).coordinates;
 let F1 = new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.fromLonLat(P1, 'EPSG:3857')),
@@ -66,14 +83,11 @@ let F1 = new ol.Feature({
     obj_prec: tab_obj[1]['objet_precedent']
 });
 let item1 = new ol.layer.Vector({
-    //controle du niveau de zoom à partir duquel l'item est visible
- 
     source: new ol.source.Vector({
         features: [F1],          
     }),
     minZoom:12,
 });
-//style : 
 const coffre = new ol.style.Style({
   image: new ol.style.Icon({
     anchor: [0, 0],
@@ -84,7 +98,6 @@ const coffre = new ol.style.Style({
     height:50,
   })
 });
-	
 item1.setStyle(coffre);
 
 //-----------------------------------------------------------------------2-------------------------------------------------------------------------------//
@@ -152,17 +165,9 @@ map.addLayer(item1);
 map.addLayer(item2);
 map.addLayer(item3);
 
-/*
-function onMapClick(e) {
-    const coords3857 = e.coordinate
-    const coords4326 = ol.proj.toLonLat(coords3857); // Conversion en lon/lat
-    //alert("You clicked the map at " + e.latlng);
-    console.log(coords4326);
-};
-
-map.on('click', onMapClick);
-*/
-
+// ----------------------------------------------------------------------
+// --- APP VUE.JS ---
+// ----------------------------------------------------------------------
 
 Vue.createApp({
     data(){
@@ -172,20 +177,43 @@ Vue.createApp({
             code1:'3498',
             code2:'3759',
             
+            heatmapVisible: false
         };
     },
+
+    methods: {
+        toggleHeatmap(){
+            this.heatmapVisible = !this.heatmapVisible;
+            heatmapLayer.setVisible(this.heatmapVisible);
+        }
+    },
+
     mounted(){
         const app = this;
-        //ajout du clique à la carte
+
+        // Click sur la carte
         map.on('singleclick', function (evt) {
+            map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
 
-        map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                let nom = feature.get('nom');
+                alert("Vous avez cliqué sur : " + nom);
 
-        console.log("Feature cliquée :", feature);
+                if(nom=='cle'){
+                    item0.getSource().removeFeature(feature);
+                    app.inventaire.push('cle');
+                    app.indice[0]=("Le prochain objet se trouve dans une ville célèbre commençant par un L");
+                }
 
-        // Récupérer les infos
-        let obj_prec = feature.get('obj_prec');
-        let nom = feature.get('nom');
+                if(nom=='coffre'){
+                    if (app.inventaire[0]=='cle'){
+                        item1.getSource().removeFeature(feature);
+                        app.inventaire.push('code 1 : 3498'); 
+                        app.indice[0]=('Va à la ville du Z-event');
+                    }
+                    else{
+                        app.indice[0]=("Il faut trouver la clé dans la capitale");
+                    }
+                }
 
         //alert("Vous avez cliqué sur : " + nom);
         if(nom=='cle'){
@@ -231,7 +259,4 @@ Vue.createApp({
     });
 });
     },
-}).mount('#entete')
-
-
-
+}).mount('#entete');
