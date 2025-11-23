@@ -36,8 +36,9 @@ let item0 = new ol.layer.Vector({
     //controle du niveau de zoom à partir duquel l'item est visible
 
     source: new ol.source.Vector({
-        features: [F0],          
+        features: [F0],      
     }),
+    minZoom:12,    
 });
 //style : 
 const cle = new ol.style.Style({
@@ -45,7 +46,7 @@ const cle = new ol.style.Style({
     anchor: [0, 0],
     anchorXUnits: "pixels",
     anchorYUnits: "pixels",
-    src: "../assets/img/cle.jpg",
+    src: "../assets/img/cle.png",
     width: 50,
     height:50,
   })
@@ -70,6 +71,7 @@ let item1 = new ol.layer.Vector({
     source: new ol.source.Vector({
         features: [F1],          
     }),
+    minZoom:12,
 });
 //style : 
 const coffre = new ol.style.Style({
@@ -77,7 +79,7 @@ const coffre = new ol.style.Style({
     anchor: [0, 0],
     anchorXUnits: "pixels",
     anchorYUnits: "pixels",
-    src: "../assets/img/coffre.png",
+    src: "../assets/img/coffre2.png",
     width: 50,
     height:50,
   })
@@ -102,9 +104,22 @@ let item2 = new ol.layer.Vector({
     source: new ol.source.Vector({
         features: [F2],          
     }),
+    minZoom:12,
 });
 //style : 
-//rien pour l'instant
+//style : 
+const code = new ol.style.Style({
+  image: new ol.style.Icon({
+    anchor: [0, 0],
+    anchorXUnits: "pixels",
+    anchorYUnits: "pixels",
+    src: "../assets/img/cadena.avif",
+    width: 50,
+    height:50,
+  })
+});
+	
+item2.setStyle(code);
 
 //-----------------------------------------------------------------------3-------------------------------------------------------------------------------//
 
@@ -123,9 +138,10 @@ let item3 = new ol.layer.Vector({
     source: new ol.source.Vector({
         features: [F3],          
     }),
+    minZoom:12,
 });
 //style : 
-//rien pour l'instant
+item3.setStyle(code);
 
 //-----------------------------------------------------------------AJOUT---CARTE------------------------------------------------------------------------------//
 
@@ -148,12 +164,14 @@ map.on('click', onMapClick);
 */
 
 
-
 Vue.createApp({
     data(){
         return{
             inventaire:[],
-            indice:['va à la capitale']
+            indice:['va à la capitale'],
+            code1:'3498',
+            code2:'3759',
+            
         };
     },
     mounted(){
@@ -169,7 +187,7 @@ Vue.createApp({
         let obj_prec = feature.get('obj_prec');
         let nom = feature.get('nom');
 
-        alert("Vous avez cliqué sur : " + nom);
+        //alert("Vous avez cliqué sur : " + nom);
         if(nom=='cle'){
             item0.getSource().removeFeature(feature);
             app.inventaire.push('cle');
@@ -178,11 +196,35 @@ Vue.createApp({
         if(nom=='coffre'){
             if (app.inventaire[0]=='cle'){
                item1.getSource().removeFeature(feature);
-               app.inventaire.push('code 1 : 3498'); 
+               app.inventaire.push('code 1 : '+app.code1 ); 
                app.indice[0]=('Va à la ville du Z-event');
             }
             else{
                 app.indice[0]=("Il faut trouver la clé dans la capitale");
+            }
+        };  
+        if(nom=='code'){
+
+            let code = prompt("Entrez votre code à 4 chiffres :");
+            if (code === app.code1) {
+                item2.getSource().removeFeature(feature);
+                app.indice[0] = ("La suite est à Mantes-la-Jolie !")
+                app.inventaire.push('code 2 : '+app.code2); 
+            } 
+            else {
+                alert("Code invalide.");
+            }
+        };  
+        if(nom=='code2'){
+
+            let code = prompt("Entrez votre code à 4 chiffres :");
+            if (code === app.code2) {
+                item3.getSource().removeFeature(feature);
+                app.indice[0] = ("")
+                alert("VICTOIRE !")
+            } 
+            else {
+                alert("Code invalide.");
             }
         };  
         return true; // stop si nécessaire
