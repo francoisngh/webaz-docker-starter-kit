@@ -36,14 +36,7 @@
             console.log("tab_obj :", tab_obj);
          </script>
     
-        <?php 
-          echo"<table><tr>";
-          foreach ($tab_obj as $obj){
-            echo "<td>".$obj['nom']."</td>";
-          };
-          echo"</tr></table>";
-       
-        ?>
+      
     </div>
     <div id="map"></div>
     <script src="../assets/js/map.js"></script>
