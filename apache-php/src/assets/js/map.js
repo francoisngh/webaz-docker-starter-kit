@@ -177,7 +177,10 @@ const app = Vue.createApp({
             indice:['va à la capitale'],
             code1:'3498',
             code2:'3759',       
-            heatmapVisible: false
+            heatmapVisible: false,
+            time: 0,
+            intervalId: null,
+            score: 0
         };
     },
 
@@ -191,6 +194,9 @@ const app = Vue.createApp({
     mounted(){
         this.startTime = new Date();
 
+        this.intervalId = setInterval(() => {
+            this.time++;
+        }, 1000);   
         const app = this;
 
         // Click sur la carte
@@ -251,14 +257,14 @@ const app = Vue.createApp({
             if (code === app.code2) {
                 item3.getSource().removeFeature(feature);
                 app.indice[0] = ("")
+
+                clearInterval(app.intervalId); //stopper chrono
+                
                 alert("VICTOIRE !")
 
-                const endTime = new Date();
-                const timeDiffMin = Math.floor((endTime - app.startTime) / 60000);
+                const score = Math.max(1, 10000 - (app.time * 50));
+                app.score = score;
 
-                const objetsTrouves = app.inventaire.filter(i => i !== 'code 1' && i !== 'code 2').length;
-                const codesTrouves = 2; // code1 et code2
-                const score = (objetsTrouves * 10) + (codesTrouves * 20) - timeDiffMin;
                 console.log("SCORE CALCULÉ :", score);
 
                 // envoyer le score au serveur
@@ -273,7 +279,8 @@ const app = Vue.createApp({
                 .then(res => res.json())
                 .then(res => {
                     if(res.success) {
-                        alert("Score enregistré !");
+                        alert("Score enregistré ! Retour vers l'accueil.");
+                        window.location.href = '/';
                     } else {
                         alert("Erreur lors de l'enregistrement du score.");
                     }

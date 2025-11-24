@@ -16,10 +16,14 @@ CREATE TABLE objets(
     emplacement GEOGRAPHY 
 );
 
+CREATE TABLE scores (
+    id SERIAL PRIMARY KEY,
+    pseudo VARCHAR(50) NOT NULL,
+    score INT NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-
-    
-
+   
 -- Insérer des données exemples
 INSERT INTO points (name, geom) VALUES
 ('Paris', ST_SetSRID(ST_MakePoint(2.3522, 48.8566), 4326)),

@@ -8,10 +8,10 @@
 <body>
     <p>L'escape game assez simple</p>
     <ul>
-        <li><a href="/map" title="lien"> page carte </a></li>
+        <li><a href="/map" title="lien"> Jouer </a></li>
     </ul>
 
-    <h2>Hall of Fame</h2>
+    <h2>Halle de la notoriété</h2>
     <table id="hall-of-fame">
         <thead>
             <tr>
