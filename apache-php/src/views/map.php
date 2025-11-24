@@ -27,6 +27,8 @@
         <button @click="toggleHeatmap">
             {{ heatmapVisible ? "Masquer la heatmap" : "Afficher la heatmap" }}
         </button>
+
+        <p>Temps écoulé : {{ time }} s</p>
         
         <!-- Pour envoyer la variable au JS   !-->
         <script>

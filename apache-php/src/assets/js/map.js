@@ -263,12 +263,20 @@ const app = Vue.createApp({
                 })
                 .then(res => res.json())
                 .then(res => {
-                    if(res.success) {
+                    if (res.success) {
+                        
                         alert("Score enregistré ! Retour vers l'accueil.");
-                        window.location.href = '/';
+                        setTimeout(() => {
+                            window.location.href = '/'; 
+                        }, 100);
                     } else {
                         alert("Erreur lors de l'enregistrement du score.");
                     }
+                })
+                .catch(err => {
+                    console.error("Erreur fetch:", err);
+                    alert("Impossible d'enregistrer le score. Retour vers l'accueil.");
+                    window.location.href = '/';
                 });
    
             } else {
