@@ -2,8 +2,8 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
-    <meeta name="viewport" content="width=device=width, initial-scale = 1.0">
-    <title>MAP HYDRO</title>
+    <meta name="viewport" content="width=device=width, initial-scale = 1.0">
+    <title>ESCAPE GAME</title>
     <link rel = "strylesheet" href="https://unpkg.com/ol/ol/css">
     <script src="https://unpkg.com/ol/dist/ol.js"></script>
     <link rel="stylesheet" href="../assets/css/map.css">

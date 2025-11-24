@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="../assets/css/accueil.css">
 </head>
 <body>
-    <p>L'escape game assez simple</p>
-    <ul>
-        <li><a href="/map" title="lien"> Jouer </a></li>
-    </ul>
+    <h1>L'escape game assez simple de François et Ðan Quê</h1>
+
+    <div style="text-align:center; margin-top:20px;">
+        <a href="/map" class="btn">Jouer</a>
+    </div>
+
 
     <h2>Halle de la notoriété</h2>
     <table id="hall-of-fame">

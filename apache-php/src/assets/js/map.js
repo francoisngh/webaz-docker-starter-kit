@@ -201,14 +201,16 @@ const app = Vue.createApp({
 
         // Click sur la carte
         map.on('singleclick', function (evt) {
-            map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
 
-                let nom = feature.get('nom');
+            if (!app.pseudo) {
+                alert("Vous devez d'abord entrer un pseudo pour commencer à jouer !");
+                return;
+        }
+            
+            map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                let nom = feature.get('nom');           
                 alert("Vous avez cliqué sur : " + nom);
 
-                
-
-        //alert("Vous avez cliqué sur : " + nom);
         if(nom=='cle'){
             item0.getSource().removeFeature(feature);
             app.inventaire.push('cle');
