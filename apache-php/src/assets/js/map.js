@@ -206,22 +206,7 @@ const app = Vue.createApp({
                 let nom = feature.get('nom');
                 alert("Vous avez cliqué sur : " + nom);
 
-                if(nom=='cle'){
-                    item0.getSource().removeFeature(feature);
-                    app.inventaire.push('cle');
-                    app.indice[0]=("Le prochain objet se trouve dans une ville célèbre commençant par un L");
-                }
-
-                if(nom=='coffre'){
-                    if (app.inventaire[0]=='cle'){
-                        item1.getSource().removeFeature(feature);
-                        app.inventaire.push('code 1 : 3498'); 
-                        app.indice[0]=('Va à la ville du Z-event');
-                    }
-                    else{
-                        app.indice[0]=("Il faut trouver la clé dans la capitale");
-                    }
-                }
+                
 
         //alert("Vous avez cliqué sur : " + nom);
         if(nom=='cle'){
